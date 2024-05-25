@@ -1,0 +1,62 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "host-run",
+            "type": "shell",
+            "windows":{"command": "./cppsim/build/host/pgrm_host.exe"},
+            "osx":{"command": "./cppsim/build/host/pgrm_host"},
+            "linux":{"command": "./cppsim/build/host/pgrm_host"},
+            "problemMatcher": [],
+            "dependsOn":["host-build"]
+        },
+        {
+            "label": "host-config",
+            "type": "shell",
+            "command": "cmake -S cppsim/main/host -B cppsim/build/host -G 'Unix Makefiles'",
+            "problemMatcher": []
+        },
+        {
+            "label": "host-build",
+            "type": "shell",
+            "command": "cmake --build cppsim/build/host",
+            "problemMatcher": [],
+            "dependsOn": []
+        },
+        {
+            "label": "host-rebuild",
+            "type": "shell",
+            "command": "cmake --build cppsim/build/host --clean-first",
+            "problemMatcher": []
+        },
+        {
+            "label": "test-config",
+            "type": "shell",
+            "command": "cmake -S cppsim/main/unittest -B cppsim/build/unittest -G 'Unix Makefiles'",
+            "problemMatcher": []
+        },
+        {
+            "label": "test-build",
+            "type": "shell",
+            "command": "cmake --build cppsim/build/unittest",
+            "problemMatcher": []
+        },
+        {
+            "label": "test-run",
+            "type": "shell",
+            "windows":{"command": "./cppsim/build/unittest/pgrm_unittest.exe"},
+            "osx":{"command": "./cppsim/build/unittest/pgrm_unittest"},
+            "linux":{"command": "./cppsim/build/unittest/pgrm_unittest"},
+            "problemMatcher": [],
+            "dependsOn":["test-build"]
+        },
+        {
+            "label": "test-rebuild",
+            "type": "shell",
+            "command": "cmake --build cppsim/build/unittest --clean-first",
+            "problemMatcher": []
+        }
+    ]
+}
