@@ -14,5 +14,7 @@ add_executable(${PROJECT_NAME}
     ../../lib/comp/resistor.cpp
     ../../lib/prime/terminal_2way.cpp
     ../../lib/prime/terminal_4way.cpp
+    ../../lib/prime/node.cpp    
+    ../../lib/utils/uid.cpp
 )
 
