@@ -13,7 +13,8 @@ class Node{
             size_t operator()(const Node &node) const;
         };
 
-        Node();
+        Node(std::string objName);
+        bool connect(Node otherNode);
         size_t uid;
         std::string name;
         std::unordered_set<Node, HashFunction> connections;

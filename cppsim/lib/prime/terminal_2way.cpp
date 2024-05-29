@@ -1,7 +1,10 @@
 #include "terminal_2way.h"
 
-Terminal_2Way::Terminal_2Way(){
+Terminal_2Way::Terminal_2Way(std::string objName):
+    lNode(objName + "-L"),
+    rNode(objName + "-R"){
     uid = UID::next_id();
+    name = objName;
 }
 
 float Terminal_2Way::voltage(){

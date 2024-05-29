@@ -7,9 +7,10 @@
 class Terminal_2Way{
     public:
         int uid;
+        std::string name;
         Node lNode;
         Node rNode;
-        Terminal_2Way();
+        Terminal_2Way(std::string objName);
         float voltage();
         float current();
         float impedance();

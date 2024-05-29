@@ -1,9 +1,14 @@
 #include "node.h"
 
-Node::Node(){
+Node::Node(std::string objName){
     uid = UID::next_id();
-    name = "";
+    name = objName;
 };
+
+bool Node::connect(Node otherNode){
+    this->connections.insert(otherNode);
+    return true;
+}
 
 std::ostream &operator<<(std::ostream &os, Node const &node){
     return os << node.name << ":" << node.uid;
