@@ -1,8 +1,8 @@
 #include "terminal_2way.h"
 
 Terminal_2Way::Terminal_2Way(std::string objName):
-    lNode(objName + "-L"),
-    rNode(objName + "-R"){
+    pLNode(std::make_shared<Node>(objName + "-L")),
+    pRNode(std::make_shared<Node>(objName + "-R")){
     uid = UID::next_id();
     name = objName;
 }

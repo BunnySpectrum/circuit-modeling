@@ -8,8 +8,8 @@ class Terminal_2Way{
     public:
         int uid;
         std::string name;
-        Node lNode;
-        Node rNode;
+        std::shared_ptr<Node> pLNode;
+        std::shared_ptr<Node> pRNode;
         Terminal_2Way(std::string objName);
         float voltage();
         float current();

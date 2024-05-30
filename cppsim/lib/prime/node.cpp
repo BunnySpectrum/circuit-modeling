@@ -5,10 +5,14 @@ Node::Node(std::string objName){
     name = objName;
 };
 
-bool Node::connect(Node otherNode){
-    this->connections.insert(otherNode);
+bool Node::connect(std::shared_ptr<Node> pNode){
+    this->connections.insert(pNode);
+    pNode->connections.insert(shared_from_this());
+
     return true;
 }
+
+
 
 std::ostream &operator<<(std::ostream &os, Node const &node){
     return os << node.name << ":" << node.uid;
@@ -22,8 +26,4 @@ bool Node::operator==(const Node &otherNode) const{
     }
 }
 
-size_t Node::HashFunction::operator()(const Node &node) const{
-    // return 0;
-    size_t hash = std::hash<int64_t>()(node.uid);
-    return hash;
-}
+

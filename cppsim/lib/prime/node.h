@@ -6,22 +6,27 @@
 
 #include "utils/uid.h"
 
-class Node{
+class Node : public std::enable_shared_from_this<Node> { 
     public:
         bool operator==(const Node &otherNode) const;
-        struct HashFunction{
-            size_t operator()(const Node &node) const;
-        };
-
+       
         Node(std::string objName);
-        bool connect(Node otherNode);
+        bool connect(std::shared_ptr<Node> pNode);
         size_t uid;
         std::string name;
-        std::unordered_set<Node, HashFunction> connections;
-        friend std::ostream &operator<<(std::ostream &os, Node const &node);
+        std::unordered_set<std::shared_ptr<Node>> connections;
+        friend std::ostream &operator<<(std::ostream &os, Node const &node);        
 
 };
 
+template<>
+struct std::hash<Node>
+{
+    size_t operator()(const Node &node) const{
+        size_t hash = std::hash<int64_t>()(node.uid);
+        return hash;
+    }
+};
 
 
 #endif
