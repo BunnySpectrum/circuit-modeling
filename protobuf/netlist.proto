@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+package netlist;
+
+message Node {
+  optional string name = 1;
+  optional int32 uid = 2;
+
+  enum NodeType {
+    NODE_TYPE_UNSPECIFIED = 0;
+  }
+
+  message Connection {
+    optional string number = 1;
+    optional NodeType type = 2 [default = NODE_TYPE_UNSPECIFIED];
+  }
+
+  repeated Connection connections = 3;
+}
+
+message NodeList {
+  repeated Node nodes = 1;
+}

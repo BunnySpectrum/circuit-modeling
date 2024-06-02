@@ -9,12 +9,23 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 include_directories(../../lib)
+
+find_package(protobuf REQUIRED CONFIG) # use lowercase protobuf for building and linking the application
+find_package(Protobuf REQUIRED) # use uppercase Protobuf for the generate_cpp lol
+
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ../../../protobuf/netlist.proto)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 add_executable(${PROJECT_NAME}
     main.cpp
+    ${PROTO_SRCS}
+    ${PROTO_HDRS}
     ../../lib/comp/resistor.cpp
     ../../lib/prime/terminal_2way.cpp
     ../../lib/prime/terminal_4way.cpp
     ../../lib/prime/node.cpp    
     ../../lib/utils/uid.cpp
+
 )
 
+target_link_libraries(${PROJECT_NAME} protobuf::libprotobuf)

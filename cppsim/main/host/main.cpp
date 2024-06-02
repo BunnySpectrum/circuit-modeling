@@ -4,6 +4,7 @@
 #include <list>
 #include "comp/resistor.h"
 #include "prime/terminal_2way.h"
+#include "netlist.pb.h"
 
 
 
