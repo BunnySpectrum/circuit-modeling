@@ -2,6 +2,8 @@
 #include <iostream>
 #include <unordered_set>
 #include <list>
+#include <fstream>
+#include <string>
 #include "comp/resistor.h"
 #include "prime/terminal_2way.h"
 #include "netlist.pb.h"
@@ -79,6 +81,27 @@ int main(){
 
 
     }
+
+
+    netlist::NodeList pbNodeList;
+
+    netlist::Node* pbNode = pbNodeList.add_nodes();
+
+    pbNode->set_uid(pZ1->uid);
+    pbNode->set_name(pZ1->name);
+    netlist::Node::Connection* pbConn = pbNode->add_connections();
+    pbConn->set_number(1);
+    pbConn->set_type(netlist::Node::NODE_TYPE_UNSPECIFIED);
+
+    {
+    // Write the new address book back to disk.
+    std::fstream output("pb_netlist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    if (!pbNodeList.SerializeToOstream(&output)) {
+      std::cerr << "Failed to write address book." << std::endl;
+      return -1;
+    }
+  }
+    
 
 
 
