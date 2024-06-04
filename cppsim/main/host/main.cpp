@@ -44,8 +44,12 @@ int main(){
         L: Z1-R, Z3-L
         R: Z4-L, U1.P-L
     */
-    // z2.lNode.connect(z1.rNode);
-    // z2.lNode.connect(z3.lNode);   
+    pZ2->pLNode->connect(pZ1->pRNode);
+    pZ2->pLNode->connect(pZ3->pLNode);
+
+    pZ2->pRNode->connect(pZ4->pLNode);
+    pZ2->pRNode->connect(pU1P->pLNode);
+   
     // z2.rNode.connect(z4.lNode);
     // z2.rNode.connect(u1P.lNode);
 
@@ -59,19 +63,46 @@ int main(){
     // z3.rNode.connect(u1Out.rNode);
     // z3.rNode.connect(u1N.lNode);
 
+    netlist::NodeList pbNodeList;
+    netlist::Node* pbNode;
+
     std::cout << "List:" << std::endl;
     std::list<std::shared_ptr<Terminal_2Way>>::iterator itr;
     std::unordered_set<std::shared_ptr<Node>>::iterator itrLinks;
     for (itr = passives.begin(); itr != passives.end(); itr++){
+        
+
         std::cout << (*itr)->name << std::endl;
 
+        
+
         std::cout << "Left node: " << (*itr)->pLNode->connections.size() << std::endl;
+        pbNode = pbNodeList.add_nodes();
+        pbNode->set_uid((*itr)->pLNode->uid);
+        pbNode->set_name((*itr)->pLNode->name);
         for(std::shared_ptr<Node> pNode : (*itr)->pLNode->connections){
+
+            netlist::Node::Connection* pbConn = pbNode->add_connections();
+            pbConn->set_number(pNode->uid);
+            pbConn->set_type(netlist::Node::NODE_TYPE_UNSPECIFIED);
+            pbConn->set_name(pNode->name);
+
             std::cout << '\t' << pNode->name << std::endl;
         }
 
+
+
         std::cout << "Right node: " << (*itr)->pRNode->connections.size() << std::endl;
+        pbNode = pbNodeList.add_nodes();
+        pbNode->set_uid((*itr)->pRNode->uid);
+        pbNode->set_name((*itr)->pRNode->name);
+
         for(itrLinks = (*itr)->pRNode->connections.begin(); itrLinks != (*itr)->pRNode->connections.end(); itrLinks++){
+            netlist::Node::Connection* pbConn = pbNode->add_connections();
+            pbConn->set_number((*itrLinks)->uid);
+            pbConn->set_type(netlist::Node::NODE_TYPE_UNSPECIFIED);
+            pbConn->set_name((*itrLinks)->name);
+
             std::cout << '\t' << (*itrLinks)->name << std::endl;
         }
 
@@ -83,15 +114,12 @@ int main(){
     }
 
 
-    netlist::NodeList pbNodeList;
 
-    netlist::Node* pbNode = pbNodeList.add_nodes();
+    
+    
 
-    pbNode->set_uid(pZ1->uid);
-    pbNode->set_name(pZ1->name);
-    netlist::Node::Connection* pbConn = pbNode->add_connections();
-    pbConn->set_number(1);
-    pbConn->set_type(netlist::Node::NODE_TYPE_UNSPECIFIED);
+
+
 
     {
     // Write the new address book back to disk.

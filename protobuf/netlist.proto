@@ -12,7 +12,8 @@ message Node {
 
   message Connection {
     optional int32 number = 1;
-    optional NodeType type = 2 [default = NODE_TYPE_UNSPECIFIED];
+    optional string  name = 2;
+    optional NodeType type = 3 [default = NODE_TYPE_UNSPECIFIED];
   }
 
   repeated Connection connections = 3;

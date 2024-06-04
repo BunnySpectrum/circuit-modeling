@@ -14,12 +14,16 @@ find_package(protobuf REQUIRED CONFIG) # use lowercase protobuf for building and
 find_package(Protobuf REQUIRED) # use uppercase Protobuf for the generate_cpp lol
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ../../../protobuf/netlist.proto)
+protobuf_generate_python(PROTO_PY ../../../protobuf/netlist.proto)
+message(${PROTO_PY})
+message("***")
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(${PROJECT_NAME}
     main.cpp
     ${PROTO_SRCS}
     ${PROTO_HDRS}
+    ${PROTO_PY}
     ../../lib/comp/resistor.cpp
     ../../lib/prime/terminal_2way.cpp
     ../../lib/prime/terminal_4way.cpp
