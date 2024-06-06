@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME}
     ../../lib/prime/terminal_2way.cpp
     ../../lib/prime/terminal_4way.cpp
     ../../lib/prime/node.cpp    
+    ../../lib/prime/net.cpp    
     ../../lib/utils/uid.cpp
 
 )

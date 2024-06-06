@@ -2,13 +2,20 @@ syntax = "proto2";
 
 package netlist;
 
+enum NodeType {
+    NODE_TYPE_UNSPECIFIED = 0;
+  }
+
 message Node {
   optional string name = 1;
   optional int32 uid = 2;
 
-  enum NodeType {
-    NODE_TYPE_UNSPECIFIED = 0;
-  }
+  optional Net net = 3;
+}
+
+message Net {
+  optional string name = 1;
+  optional int32 uid = 2;
 
   message Connection {
     optional int32 number = 1;
@@ -21,4 +28,9 @@ message Node {
 
 message NodeList {
   repeated Node nodes = 1;
+}
+
+
+message NetList {
+  repeated Net nets = 1;
 }
