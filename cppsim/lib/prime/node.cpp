@@ -1,17 +1,10 @@
 #include "node.h"
 
-Node::Node(std::string objName){
+Node::Node(std::string objName, std::string keyValue){
     uid = UID::next_id();
     name = objName;
-};
-
-bool Node::connect(std::shared_ptr<Node> pNode){
-    this->connections.insert(pNode);
-    pNode->connections.insert(shared_from_this());
-
-    return true;
+    key = keyValue;
 }
-
 
 
 std::ostream &operator<<(std::ostream &os, Node const &node){

@@ -4,6 +4,7 @@
 #include <list>
 #include <fstream>
 #include <string>
+#include <variant>
 #include "comp/resistor.h"
 #include "prime/terminal_2way.h"
 #include "netlist.pb.h"
@@ -61,71 +62,45 @@ int main(){
     design.insert(design.end(), sources.begin(), sources.end());
     design.insert(design.end(), components.begin(), components.end());
 
-    pNetVin->add_node(pVin->pRNode);
-    pNetVin->add_node(pZ1->pLNode);
+    pNetVin->add_node(pVin->pT2Node);
+    pNetVin->add_node(pZ1->pT1Node);
 
-    pNetZTee->add_node(pZ1->pRNode);
-    pNetZTee->add_node(pZ2->pLNode);
-    pNetZTee->add_node(pZ3->pLNode);
+    pNetZTee->add_node(pZ1->pT2Node);
+    pNetZTee->add_node(pZ2->pT1Node);
+    pNetZTee->add_node(pZ3->pT1Node);
 
-    pNetU1P->add_node(pZ2->pRNode);
-    pNetU1P->add_node(pZ4->pLNode);
-    pNetU1P->add_node(pU1P->pRNode);
+    pNetU1P->add_node(pZ2->pT2Node);
+    pNetU1P->add_node(pZ4->pT1Node);
+    pNetU1P->add_node(pU1P->pT2Node);
 
-    pNetVout->add_node(pZ3->pRNode);
-    pNetVout->add_node(pU1Out->pRNode);
-    pNetVout->add_node(pU1N->pRNode);
+    pNetVout->add_node(pZ3->pT2Node);
+    pNetVout->add_node(pU1Out->pT2Node);
+    pNetVout->add_node(pU1N->pT2Node);
 
-    pNetGnd->add_node(pVin->pLNode);
-    pNetGnd->add_node(pZ4->pRNode);
-    pNetGnd->add_node(pU1Vss->pRNode);
+    pNetGnd->add_node(pVin->pT1Node);
+    pNetGnd->add_node(pVdd->pT1Node);
+    pNetGnd->add_node(pZ4->pT2Node);
+    pNetGnd->add_node(pU1Vss->pT2Node);
 
-    pNetVmain->add_node(pU1Vdd->pRNode);
-
-    /*
-    Z1
-        L: Vin-R
-        R: Z3-L, Z2-L
-    */
-    // pZ1->pLNode->connect(pVin->pRNode);
-    // pZ1->pRNode->connect(pZ2->pLNode);
-    // pZ1->pRNode->connect(pZ3->pLNode);
+    pNetVmain->add_node(pU1Vdd->pT2Node);
+    pNetVmain->add_node(pVdd->pT2Node);
 
 
-    /*
-    Z2
-        L: Z1-R, Z3-L
-        R: Z4-L, U1.P-L
-    */
-    // pZ2->pLNode->connect(pZ3->pLNode);
-    // pZ2->pRNode->connect(pZ4->pLNode);
-    // pZ2->pRNode->connect(pU1P->pRNode);
+    netlist::System pbSystem;
+    netlist::NodeList* pbNodeList = pbSystem.mutable_nodelist();
+    netlist::NetList* pbNetList = pbSystem.mutable_netlist();
+    netlist::ElementList* pbElementList = pbSystem.mutable_elementlist();
 
-    /*
-    Z3
-        L: Z1-R, Z2-L
-        R: U1.Out-R, U1.N-L
-    */
-    // pZ3->pRNode->connect(pU1Out->pRNode);
-    // pZ3->pRNode->connect(pU1N->pRNode);
-
-    // pZ4->pRNode->connect(pVin->pLNode);
-    // pZ4->pRNode->connect(pVdd->pLNode);
-    // pZ4->pRNode->connect(pU1Vss->pRNode);
-
-    // pU1Vdd->pRNode->connect(pVdd->pRNode);
-
-
-    netlist::NodeList pbNodeList;
-    netlist::NetList pbNetList;
     netlist::Node* pbNode;
     netlist::Net* pbNet;
+    netlist::Element* pbElement;
 
-    std::list<std::shared_ptr<Net>>::iterator itrNet;
+
     std::cout << "Nets:" << std::endl;
+    std::list<std::shared_ptr<Net>>::iterator itrNet;
     for(itrNet = nets.begin(); itrNet != nets.end(); itrNet++){
         std::cout << (*itrNet)->name << std::endl;
-        pbNet = pbNetList.add_nets();
+        pbNet = pbNetList->add_nets();
         pbNet->set_uid((*itrNet)->uid);
         pbNet->set_name((*itrNet)->name);
         
@@ -133,65 +108,44 @@ int main(){
             std::cout << "\t" << pNode->name << std::endl;
             
             netlist::Net::Connection* pbConn = pbNet->add_connections();
-            pbConn->set_number(pNode->uid);
-            pbConn->set_type(netlist::NODE_TYPE_UNSPECIFIED);
-            pbConn->set_name(pNode->name);
-
-
+            pbConn->set_node_uid(pNode->uid);
+            pbConn->set_node_name(pNode->name);
         }
-
-
-
-    }
-
-    // return 0;
-
-    std::cout << "Nodes:" << std::endl;
-    std::list<std::shared_ptr<Terminal_2Way>>::iterator itr;
-
-    std::unordered_set<std::shared_ptr<Node>>::iterator itrLinks;
-    for (itr = design.begin(); itr != design.end(); itr++){
-    
-        std::cout << (*itr)->name << std::endl;
-
-        std::cout << "Left node: " << (*itr)->pLNode->connections.size() << std::endl;
-        pbNode = pbNodeList.add_nodes();
-        pbNode->set_uid((*itr)->pLNode->uid);
-        pbNode->set_name((*itr)->pLNode->name);
-        for(std::shared_ptr<Node> pNode : (*itr)->pLNode->connections){
-
-            // netlist::Node::Connection* pbConn = pbNode->add_connections();
-            // pbConn->set_number(pNode->uid);
-            // pbConn->set_type(netlist::NODE_TYPE_UNSPECIFIED);
-            // pbConn->set_name(pNode->name);
-
-            std::cout << '\t' << pNode->name << std::endl;
-        }
-
-
-
-        std::cout << "Right node: " << (*itr)->pRNode->connections.size() << std::endl;
-        pbNode = pbNodeList.add_nodes();
-        pbNode->set_uid((*itr)->pRNode->uid);
-        pbNode->set_name((*itr)->pRNode->name);
-
-        for(itrLinks = (*itr)->pRNode->connections.begin(); itrLinks != (*itr)->pRNode->connections.end(); itrLinks++){
-            // netlist::Node::Connection* pbConn = pbNode->add_connections();
-            // pbConn->set_number((*itrLinks)->uid);
-            // pbConn->set_type(netlist::NODE_TYPE_UNSPECIFIED);
-            // pbConn->set_name((*itrLinks)->name);
-
-            std::cout << '\t' << (*itrLinks)->name << std::endl;
-        }
-
-        
-
-        std::cout << std::endl;
-
-
     }
 
 
+    std::cout << "Elements:" << std::endl;
+    std::list<std::shared_ptr<Terminal_2Way>>::iterator itrT2;
+    std::list<std::shared_ptr<Node>>::iterator itrNode;
+    for (itrT2 = design.begin(); itrT2 != design.end(); itrT2++){
+    
+        std::cout << "\t" << (*itrT2)->name << std::endl;
+
+        pbElement = pbElementList->add_elements();
+        pbElement->set_uid((*itrT2)->uid);
+        pbElement->set_name((*itrT2)->name);
+
+        pbNode = pbNodeList->add_nodes();
+        pbNode->set_uid((*itrT2)->pT1Node->uid);
+        pbNode->set_name((*itrT2)->pT1Node->name);
+        pbNode->set_key((*itrT2)->pT1Node->key);
+
+        pbNode = pbNodeList->add_nodes();
+        pbNode->set_uid((*itrT2)->pT2Node->uid);
+        pbNode->set_name((*itrT2)->pT2Node->name);        
+        pbNode->set_key((*itrT2)->pT2Node->key);
+
+    }
+
+  {
+    // Write element list to disk
+    std::fstream output("pb_elementlist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    if (!pbElementList->SerializeToOstream(&output)) {
+      std::cerr << "Failed to write elementlist book." << std::endl;
+      return -1;
+    }
+  }
+
 
     
     
@@ -199,20 +153,30 @@ int main(){
 
 
 
-    {
-    // Write the new address book back to disk.
+  {
+    // Write netlist and nodelist to disk
     std::fstream output("pb_netlist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
-    // if (!pbNodeList.SerializeToOstream(&output)) {
-    //   std::cerr << "Failed to write nodelist book." << std::endl;
-    //   return -1;
-    // }
-    if (!pbNetList.SerializeToOstream(&output)) {
+    if (!pbNetList->SerializeToOstream(&output)) {
       std::cerr << "Failed to write netlist book." << std::endl;
       return -1;
     }
   }
-    
 
+  {    
+    std::fstream output("pb_nodelist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    if (!pbNodeList->SerializeToOstream(&output)) {
+      std::cerr << "Failed to write nodelist book." << std::endl;
+      return -1;
+    }
+  }
+    
+  {    
+    std::fstream output("pb_system.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    if (!pbSystem.SerializeToOstream(&output)) {
+      std::cerr << "Failed to write system to disk." << std::endl;
+      return -1;
+    }
+  }
 
 
     return 0;

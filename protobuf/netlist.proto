@@ -2,15 +2,101 @@ syntax = "proto2";
 
 package netlist;
 
-enum NodeType {
-    NODE_TYPE_UNSPECIFIED = 0;
+enum WaveformType {
+  WAVEFORM_TYPE_UNSPECIFIED = 0;
+  WAVEFORM_TYPE_EXP = 1;
+  WAVEFORM_TYPE_PULSE = 2;
+  WAVEFORM_TYPE_PW_LINEAR = 3;
+  WAVEFORM_TYPE_SFFM = 4;
+  WAVEFORM_TYPE_SINE = 5;
+  WAVEFORM_TYPE_NPOLY = 6;
+  WAVEFORM_TYPE_PW_WFM = 7; // piecewise waveform
+}
+
+enum ElementType {
+    ELEMENT_TYPE_UNSPECIFIED = 0;
+
+    ELEMENT_TYPE_PASSIVE_2T = 1; // resistor/capacitor/inductor
+      // Spice: C, L, R 
+      // N = 2
+
+    ELEMENT_TYPE_XFMR = 2;
+      // Spice uses K directive for coupling between inductors
+      // N = 4
+
+    // ELEMENT_TYPE_MUTUAL_INDUCTOR omitted - will just roll the fields into the XFMR element
+
+    ELEMENT_TYPE_VCCS = 3;
+      // Spice: G
+      // N = 4
+
+    ELEMENT_TYPE_CCCS = 4;
+      // Spice: F 
+      // N = 4
+
+    ELEMENT_TYPE_VCVS = 5;
+      // Spice: E 
+      // N = 4
+
+    ELEMENT_TYPE_CCVS = 6;
+      // Spice: H 
+      // N = 4
+
+    // ELEMENT_TYPE_CCVS_SINGLE_OUT omitted - looks to be a special case of CCVS
+
+    ELEMENT_TYPE_DIODE = 7;
+      // Spice: D
+      // N = 2
+
+    ELEMENT_TYPE_SWITCH = 8;
+      // Spice: S (voltage-controlled)
+      // N = 4
+
+    ELEMENT_TYPE_VS = 9; // voltage source for DC, DC+noise, AC, arb
+      // Spice: V 
+      // N = 2
+
+    ELEMENT_TYPE_CS = 10; // current source for DC, DC+noise, AC, arb
+      // Spice: I
+      // N = 2
+
+    //ELEMENT_TYPE_TRANSISTOR = 11;
+    ELEMENT_TYPE_JFET = 11;
+    ELEMENT_TYPE_IGFET = 12;
+    ELEMENT_TYPE_BJT = 13;
+      // Spice: J (JFET), M (MOSFET), Q (bipolar)
+      // N = 3, 4, 4
+
+    ELEMENT_TYPE_TRANSMISSION_LINE = 14;
+      // Spice: T 
+      // N = 4
+
+    ELEMENT_TYPE_SUBCIRCUIT = 15;
+      // Spice: X 
+      // N = n
   }
+
+message Element {
+  optional string name = 1;
+  optional int32 uid = 2;
+  optional ElementType type = 3;
+  optional NodeList nodes = 4;
+}
+
+message ElementList {
+  repeated Element elements = 1;
+}
 
 message Node {
   optional string name = 1;
   optional int32 uid = 2;
 
-  optional Net net = 3;
+  optional string key = 3;
+  optional Net net = 4;
+}
+
+message NodeList {
+  repeated Node nodes = 1;
 }
 
 message Net {
@@ -18,19 +104,20 @@ message Net {
   optional int32 uid = 2;
 
   message Connection {
-    optional int32 number = 1;
-    optional string  name = 2;
-    optional NodeType type = 3 [default = NODE_TYPE_UNSPECIFIED];
+    optional int32 node_uid = 1;
+    optional string node_name = 2;
   }
 
   repeated Connection connections = 3;
 }
 
-message NodeList {
-  repeated Node nodes = 1;
+message NetList {
+  repeated Net nets = 1;
 }
 
 
-message NetList {
-  repeated Net nets = 1;
+message System {
+  optional ElementList elementlist = 1;
+  optional NetList netlist = 2;
+  optional NodeList nodelist = 3;
 }
