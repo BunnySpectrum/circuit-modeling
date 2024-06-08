@@ -18,7 +18,7 @@ class Node : public std::enable_shared_from_this<Node> {
 
         std::unique_ptr<netlist::Node> to_proto();
 
-        uint64_t uid;
+        int32_t uid;
         std::string name;
         std::string key;
         friend std::ostream &operator<<(std::ostream &os, Node const &node);        

@@ -7,12 +7,12 @@ Node::Node(std::string objName, std::string keyValue){
 }
 
 std::unique_ptr<netlist::Node> Node::to_proto(){
-    auto puNodePB = std::make_unique<netlist::Node>();
-    puNodePB->set_uid(uid);
-    puNodePB->set_name(name);
-    puNodePB->set_key(key);
+    auto pNodePB = std::make_unique<netlist::Node>();
+    pNodePB->set_uid(uid);
+    pNodePB->set_name(name);
+    pNodePB->set_key(key);
 
-    return std::move(puNodePB);
+    return std::move(pNodePB);
 }
 
 std::ostream &operator<<(std::ostream &os, Node const &node){

@@ -12,7 +12,23 @@ bool Net::add_node(std::shared_ptr<Node> pNode){
     return true;
 }
 
+std::unique_ptr<netlist::Net> Net::to_proto(){
+    auto pNetPB = std::make_unique<netlist::Net>();
+    pNetPB->set_uid(uid);
+    pNetPB->set_name(name);
 
+    google::protobuf::RepeatedPtrField<netlist::Net::Connection> *pNetConnsPB = pNetPB->mutable_connections();
+    
+    for(const std::shared_ptr<Node>& pNode : this->connections){
+        auto pNetConnPB = std::make_unique<netlist::Net::Connection>();
+
+        pNetConnPB->set_node_uid(pNode->uid);
+        pNetConnPB->set_node_name(pNode->name);
+        pNetConnsPB->AddAllocated(pNetConnPB.release());
+    }
+
+    return std::move(pNetPB);
+}
 
 std::ostream &operator<<(std::ostream &os, Net const &net){
     return os << "Net: " << net.name << ":" << net.uid;

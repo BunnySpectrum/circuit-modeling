@@ -6,7 +6,7 @@
 
 class Terminal_4Way{
     public:
-        int uid;
+        int32_t uid;
         std::string name;
         Terminal_2Way input;
         Terminal_2Way output;

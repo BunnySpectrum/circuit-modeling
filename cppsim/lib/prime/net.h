@@ -14,8 +14,11 @@ class Net : public std::enable_shared_from_this<Net> {
         bool operator==(const Net &otherNet) const;
        
         Net(std::string objName);
+        std::unique_ptr<netlist::Net> to_proto();
+
         bool add_node(std::shared_ptr<Node> pNode);
-        size_t uid;
+        
+        int32_t uid;
         std::string name;
         std::unordered_set<std::shared_ptr<Node>> connections;
         friend std::ostream &operator<<(std::ostream &os, Net const &net);        

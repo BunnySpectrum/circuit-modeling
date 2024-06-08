@@ -6,7 +6,7 @@
 
 class Terminal_2Way{
     public:
-        int uid;
+        int32_t uid;
         std::string name;
 
         std::shared_ptr<Node> pT1Node;

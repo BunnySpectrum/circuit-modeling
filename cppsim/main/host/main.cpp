@@ -89,31 +89,25 @@ int main(){
     netlist::System pbSystem;
 
     netlist::NodeList* pbNodeList = pbSystem.mutable_nodelist();
-    google::protobuf::RepeatedPtrField<netlist::Node> *pbNodes = pbNodeList->mutable_nodes();
+    google::protobuf::RepeatedPtrField<netlist::Node> *pNodelistNodesPB = pbNodeList->mutable_nodes();
+    std::unique_ptr<netlist::Node> pNodePB;
 
 
     netlist::NetList* pbNetList = pbSystem.mutable_netlist();
+    google::protobuf::RepeatedPtrField<netlist::Net> *pNetlistNetsPB = pbNetList->mutable_nets();
+    std::unique_ptr<netlist::Net> pNetPB;
+
     netlist::ElementList* pbElementList = pbSystem.mutable_elementlist();
 
-    std::unique_ptr<netlist::Node> pbNode;
-    netlist::Net* pbNet;
+    std::unique_ptr<netlist::Net::Connection> pbNetConn;
     netlist::Element* pbElement;
 
 
     std::cout << "Nets:" << std::endl;
     for(const std::shared_ptr<Net>& net : nets){
-        std::cout << net->name << std::endl;
-        pbNet = pbNetList->add_nets();
-        pbNet->set_uid(net->uid);
-        pbNet->set_name(net->name);
-        
-        for(std::shared_ptr<Node> pNode : net->connections){
-            std::cout << "\t" << pNode->name << std::endl;
-            
-            netlist::Net::Connection* pbConn = pbNet->add_connections();
-            pbConn->set_node_uid(pNode->uid);
-            pbConn->set_node_name(pNode->name);
-        }
+        std::cout << "\t" << net->name << std::endl;
+        pNetPB = net->to_proto();
+        pNetlistNetsPB->AddAllocated(pNetPB.release());
     }
 
 
@@ -127,11 +121,11 @@ int main(){
         pbElement->set_name(elementT2->name);
 
 
-        pbNode = elementT2->pT1Node->to_proto();
-        pbNodes->AddAllocated(pbNode.release());
+        pNodePB = elementT2->pT1Node->to_proto();
+        pNodelistNodesPB->AddAllocated(pNodePB.release());
         
-        pbNode = elementT2->pT2Node->to_proto();
-        pbNodes->AddAllocated(pbNode.release());
+        pNodePB = elementT2->pT2Node->to_proto();
+        pNodelistNodesPB->AddAllocated(pNodePB.release());
 
     }
 

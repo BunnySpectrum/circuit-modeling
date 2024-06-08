@@ -5,7 +5,7 @@
 
 class UID{
     public:
-        static int64_t next_id();
+        static int32_t next_id();
 };
 
 
