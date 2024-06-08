@@ -7,6 +7,8 @@
 #include "prime/node.h"
 #include "utils/uid.h"
 
+// class Node;
+
 class Net : public std::enable_shared_from_this<Net> { 
     public:
         bool operator==(const Net &otherNet) const;

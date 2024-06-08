@@ -6,6 +6,14 @@ Node::Node(std::string objName, std::string keyValue){
     key = keyValue;
 }
 
+std::unique_ptr<netlist::Node> Node::to_proto(){
+    auto puNodePB = std::make_unique<netlist::Node>();
+    puNodePB->set_uid(uid);
+    puNodePB->set_name(name);
+    puNodePB->set_key(key);
+
+    return std::move(puNodePB);
+}
 
 std::ostream &operator<<(std::ostream &os, Node const &node){
     return os << node.name << ":" << node.uid;

@@ -5,6 +5,9 @@
 #include <iostream>
 
 #include "utils/uid.h"
+#include "netlist.pb.h"
+
+class Net;
 
 class Node : public std::enable_shared_from_this<Node> { 
     public:
@@ -13,7 +16,9 @@ class Node : public std::enable_shared_from_this<Node> {
         Node(std::string objName, std::string key); // Primary constructor
         Node(std::string objName): Node(objName, ""){} // Delegating constructor
 
-        size_t uid;
+        std::unique_ptr<netlist::Node> to_proto();
+
+        uint64_t uid;
         std::string name;
         std::string key;
         friend std::ostream &operator<<(std::ostream &os, Node const &node);        

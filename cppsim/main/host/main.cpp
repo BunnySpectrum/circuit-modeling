@@ -87,24 +87,27 @@ int main(){
 
 
     netlist::System pbSystem;
+
     netlist::NodeList* pbNodeList = pbSystem.mutable_nodelist();
+    google::protobuf::RepeatedPtrField<netlist::Node> *pbNodes = pbNodeList->mutable_nodes();
+
+
     netlist::NetList* pbNetList = pbSystem.mutable_netlist();
     netlist::ElementList* pbElementList = pbSystem.mutable_elementlist();
 
-    netlist::Node* pbNode;
+    std::unique_ptr<netlist::Node> pbNode;
     netlist::Net* pbNet;
     netlist::Element* pbElement;
 
 
     std::cout << "Nets:" << std::endl;
-    std::list<std::shared_ptr<Net>>::iterator itrNet;
-    for(itrNet = nets.begin(); itrNet != nets.end(); itrNet++){
-        std::cout << (*itrNet)->name << std::endl;
+    for(const std::shared_ptr<Net>& net : nets){
+        std::cout << net->name << std::endl;
         pbNet = pbNetList->add_nets();
-        pbNet->set_uid((*itrNet)->uid);
-        pbNet->set_name((*itrNet)->name);
+        pbNet->set_uid(net->uid);
+        pbNet->set_name(net->name);
         
-        for(std::shared_ptr<Node> pNode : (*itrNet)->connections){
+        for(std::shared_ptr<Node> pNode : net->connections){
             std::cout << "\t" << pNode->name << std::endl;
             
             netlist::Net::Connection* pbConn = pbNet->add_connections();
@@ -115,25 +118,20 @@ int main(){
 
 
     std::cout << "Elements:" << std::endl;
-    std::list<std::shared_ptr<Terminal_2Way>>::iterator itrT2;
-    std::list<std::shared_ptr<Node>>::iterator itrNode;
-    for (itrT2 = design.begin(); itrT2 != design.end(); itrT2++){
+    for (const std::shared_ptr<Terminal_2Way>& elementT2 : design){
     
-        std::cout << "\t" << (*itrT2)->name << std::endl;
+        std::cout << "\t" << elementT2->name << std::endl;
 
         pbElement = pbElementList->add_elements();
-        pbElement->set_uid((*itrT2)->uid);
-        pbElement->set_name((*itrT2)->name);
+        pbElement->set_uid(elementT2->uid);
+        pbElement->set_name(elementT2->name);
 
-        pbNode = pbNodeList->add_nodes();
-        pbNode->set_uid((*itrT2)->pT1Node->uid);
-        pbNode->set_name((*itrT2)->pT1Node->name);
-        pbNode->set_key((*itrT2)->pT1Node->key);
 
-        pbNode = pbNodeList->add_nodes();
-        pbNode->set_uid((*itrT2)->pT2Node->uid);
-        pbNode->set_name((*itrT2)->pT2Node->name);        
-        pbNode->set_key((*itrT2)->pT2Node->key);
+        pbNode = elementT2->pT1Node->to_proto();
+        pbNodes->AddAllocated(pbNode.release());
+        
+        pbNode = elementT2->pT2Node->to_proto();
+        pbNodes->AddAllocated(pbNode.release());
 
     }
 

@@ -7,6 +7,7 @@ Net::Net(std::string objName){
 
 bool Net::add_node(std::shared_ptr<Node> pNode){
     this->connections.insert(pNode);
+    // pNode->net = shared_from_this();
 
     return true;
 }
