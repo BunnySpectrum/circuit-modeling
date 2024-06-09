@@ -28,9 +28,10 @@ elementlist = system.elementlist
 print("Elements")
 for element in elementlist.elements:
     # print(f"{node.name}: {[_.name for _ in node.connections]}")
-    # info = [(_.name + ":" + str(_.uid)) for _ in element.nodes]
-    info = ""
-    print(f"\t{element.name}:{element.uid} {info}")
+    info = [(_.name + ":" + str(_.uid)) for _ in element.nodes]
+    # info = ""
+    typeName = netlist_pb2.ElementType.Name(element.type)
+    print(f"\t{element.name}:{element.uid} --- Type: {typeName} --- Nodes: {info}")
 print("")
 
 print("Nodes")

@@ -98,6 +98,8 @@ int main(){
     std::unique_ptr<netlist::Net> pNetPB;
 
     netlist::ElementList* pbElementList = pbSystem.mutable_elementlist();
+    google::protobuf::RepeatedPtrField<netlist::Element> *pElementsPB = pbElementList->mutable_elements();
+    std::unique_ptr<netlist::Element> pElementPB;
 
     std::unique_ptr<netlist::Net::Connection> pbNetConn;
     netlist::Element* pbElement;
@@ -115,11 +117,9 @@ int main(){
     for (const std::shared_ptr<Terminal_2Way>& elementT2 : design){
     
         std::cout << "\t" << elementT2->name << std::endl;
-
-        pbElement = pbElementList->add_elements();
-        pbElement->set_uid(elementT2->uid);
-        pbElement->set_name(elementT2->name);
-
+        
+        pElementPB = elementT2->to_proto();
+        pElementsPB->AddAllocated(pElementPB.release());
 
         pNodePB = elementT2->pT1Node->to_proto();
         pNodelistNodesPB->AddAllocated(pNodePB.release());

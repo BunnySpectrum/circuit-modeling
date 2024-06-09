@@ -80,7 +80,7 @@ message Element {
   optional int32 uid = 1;
   optional string name = 2;
   optional ElementType type = 3;
-  optional NodeList nodes = 4;
+  repeated Node nodes = 4;
 }
 
 message ElementList {

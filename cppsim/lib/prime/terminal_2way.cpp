@@ -7,6 +7,24 @@ Terminal_2Way::Terminal_2Way(std::string objName):
     name = objName;
 }
 
+std::unique_ptr<netlist::Element> Terminal_2Way::to_proto(){
+    auto pElementPB = std::make_unique<netlist::Element>();
+
+    pElementPB->set_uid(uid);
+    pElementPB->set_name(name);
+    pElementPB->set_type(netlist::ElementType::ELEMENT_TYPE_PASSIVE_2T);
+
+    google::protobuf::RepeatedPtrField<netlist::Node> *pElementNodesPB = pElementPB->mutable_nodes();
+
+    auto pNodePB = pT1Node->to_proto();
+    pElementNodesPB->AddAllocated(pNodePB.release());
+    
+    pNodePB = pT2Node->to_proto();
+    pElementNodesPB->AddAllocated(pNodePB.release());
+
+    return std::move(pElementPB);
+}
+
 float Terminal_2Way::voltage(){
     return 1.0;
 }
