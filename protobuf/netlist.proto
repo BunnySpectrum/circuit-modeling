@@ -93,10 +93,6 @@ message Node {
   optional string key = 3;
 }
 
-message NodeList {
-  repeated Node nodes = 1;
-}
-
 message Net {
   optional int32 uid = 1;
   optional string name = 2;
@@ -117,5 +113,4 @@ message NetList {
 message System {
   optional ElementList elementlist = 1;
   optional NetList netlist = 2;
-  optional NodeList nodelist = 3;
 }

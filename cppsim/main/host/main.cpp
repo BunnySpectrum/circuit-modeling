@@ -88,8 +88,6 @@ int main(){
 
     netlist::System pbSystem;
 
-    netlist::NodeList* pbNodeList = pbSystem.mutable_nodelist();
-    google::protobuf::RepeatedPtrField<netlist::Node> *pNodelistNodesPB = pbNodeList->mutable_nodes();
     std::unique_ptr<netlist::Node> pNodePB;
 
 
@@ -100,10 +98,6 @@ int main(){
     netlist::ElementList* pbElementList = pbSystem.mutable_elementlist();
     google::protobuf::RepeatedPtrField<netlist::Element> *pElementsPB = pbElementList->mutable_elements();
     std::unique_ptr<netlist::Element> pElementPB;
-
-    std::unique_ptr<netlist::Net::Connection> pbNetConn;
-    netlist::Element* pbElement;
-
 
     std::cout << "Nets:" << std::endl;
     for(const std::shared_ptr<Net>& net : nets){
@@ -117,51 +111,11 @@ int main(){
     for (const std::shared_ptr<Terminal_2Way>& elementT2 : design){
     
         std::cout << "\t" << elementT2->name << std::endl;
-        
         pElementPB = elementT2->to_proto();
         pElementsPB->AddAllocated(pElementPB.release());
-
-        pNodePB = elementT2->pT1Node->to_proto();
-        pNodelistNodesPB->AddAllocated(pNodePB.release());
-        
-        pNodePB = elementT2->pT2Node->to_proto();
-        pNodelistNodesPB->AddAllocated(pNodePB.release());
-
     }
 
-  {
-    // Write element list to disk
-    std::fstream output("pb_elementlist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
-    if (!pbElementList->SerializeToOstream(&output)) {
-      std::cerr << "Failed to write elementlist book." << std::endl;
-      return -1;
-    }
-  }
 
-
-    
-    
-
-
-
-
-  {
-    // Write netlist and nodelist to disk
-    std::fstream output("pb_netlist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
-    if (!pbNetList->SerializeToOstream(&output)) {
-      std::cerr << "Failed to write netlist book." << std::endl;
-      return -1;
-    }
-  }
-
-  {    
-    std::fstream output("pb_nodelist.bin", std::ios::out | std::ios::trunc | std::ios::binary);
-    if (!pbNodeList->SerializeToOstream(&output)) {
-      std::cerr << "Failed to write nodelist book." << std::endl;
-      return -1;
-    }
-  }
-    
   {    
     std::fstream output("pb_system.bin", std::ios::out | std::ios::trunc | std::ios::binary);
     if (!pbSystem.SerializeToOstream(&output)) {

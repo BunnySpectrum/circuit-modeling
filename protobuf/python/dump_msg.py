@@ -11,20 +11,9 @@ system = netlist_pb2.System()
 with open("../../pb_system.bin", "rb") as f:
     system.ParseFromString(f.read())
 
-nodelist = system.nodelist
 netlist = system.netlist
 elementlist = system.elementlist
 
-# with open("../../pb_nodelist.bin", "rb") as f:
-#     nodelist.ParseFromString(f.read())
-
-# with open("../../pb_netlist.bin", "rb") as f:
-#     netlist.ParseFromString(f.read())
-
-# with open("../../pb_elementlist.bin", "rb") as f:
-#     elementlist.ParseFromString(f.read())
-
-# code.interact(local=locals())
 print("Elements")
 for element in elementlist.elements:
     # print(f"{node.name}: {[_.name for _ in node.connections]}")
@@ -32,12 +21,6 @@ for element in elementlist.elements:
     # info = ""
     typeName = netlist_pb2.ElementType.Name(element.type)
     print(f"\t{element.name}:{element.uid} --- Type: {typeName} --- Nodes: {info}")
-print("")
-
-print("Nodes")
-for node in nodelist.nodes:
-    # print(f"{node.name}: {[_.name for _ in node.connections]}")
-    print(f"\tname = {node.name}, uid = {node.uid}, key = {node.key}")
 print("")
 
 print("Nets")
