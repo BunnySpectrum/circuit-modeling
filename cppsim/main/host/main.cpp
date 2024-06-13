@@ -56,7 +56,16 @@ int main(){
     for (const std::shared_ptr<Terminal_2Way>& elementT2 : skElements){
     
         std::cout << "\t" << elementT2->name << " [";
-        std::cout << elementT2->pT1Node->name << ", " << elementT2->pT2Node->name;
+        
+        bool firstTime = true;
+        for(const std::shared_ptr<Node>& node : elementT2->get_nodes()){
+          if(firstTime){
+            std::cout << node->name;
+            firstTime = false;
+          }else{
+            std::cout << ", " << node->name;
+          }
+        }
         std::cout << "]" << std::endl;
 
         pElementPB = elementT2->to_proto();

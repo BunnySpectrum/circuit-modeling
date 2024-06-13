@@ -7,6 +7,13 @@ Terminal_2Way::Terminal_2Way(std::string objName):
     name = objName;
 }
 
+std::list<std::shared_ptr<Node>> Terminal_2Way::get_nodes(){
+    std::list<std::shared_ptr<Node>> result;
+    result.push_back(pT1Node);
+    result.push_back(pT2Node);
+    return result;
+}
+
 std::unique_ptr<netlist::Element> Terminal_2Way::to_proto(){
     auto pElementPB = std::make_unique<netlist::Element>();
 

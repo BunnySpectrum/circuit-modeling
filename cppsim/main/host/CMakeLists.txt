@@ -29,6 +29,7 @@ add_executable(${PROJECT_NAME}
     ../../designs/sallen_key/design.cpp
     ../../lib/comp/resistor.cpp
     ../../lib/prime/terminal_2way.cpp
+    ../../lib/prime/element.cpp    
     ../../lib/prime/terminal_4way.cpp
     ../../lib/prime/node.cpp    
     ../../lib/prime/net.cpp    
