@@ -1,5 +1,5 @@
-#ifndef _SALLEN_KEY_DESIGN_H_
-#define _SALLEN_KEY_DESIGN_H_
+#ifndef _RLC_LP_DESIGN_H_
+#define _RLC_LP_DESIGN_H_
 
 #include <iostream>
 #include <unordered_set>

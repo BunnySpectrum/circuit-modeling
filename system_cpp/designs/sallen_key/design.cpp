@@ -13,15 +13,15 @@
                                  (Gnd) +-----------------------+
 */
 
-void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Terminal_2Way>>& elements){
+void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Element>>& elements){
     std::cout << "loading design." << std::endl;
 
 
     // Create elements
-    auto pVin = std::make_shared<Terminal_2Way>("Vin");
+    auto pVin = std::make_shared<Voltage_Source>("Vin");
     elements.push_back(pVin);
 
-    auto pVdd = std::make_shared<Terminal_2Way>("Vdd");
+    auto pVdd = std::make_shared<Voltage_Source>("Vdd");
     elements.push_back(pVdd);
 
 
@@ -56,7 +56,7 @@ void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_pt
 
     // Nets
     auto pNetVin = std::make_shared<Net>("Vin");
-    pNetVin->add_node(pVin->pT2Node);
+    pNetVin->add_node(pVin->pPosNode);
     pNetVin->add_node(pZ1->pT1Node);
     nets.push_back(pNetVin);
 
@@ -81,12 +81,12 @@ void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_pt
     
     auto pNetVmain = std::make_shared<Net>("Vmain");
     pNetVmain->add_node(pU1Vdd->pT2Node);
-    pNetVmain->add_node(pVdd->pT2Node);
+    pNetVmain->add_node(pVdd->pPosNode);
     nets.push_back(pNetVmain);
 
     auto pNetGnd = std::make_shared<Net>("Gnd");
-    pNetGnd->add_node(pVin->pT1Node);
-    pNetGnd->add_node(pVdd->pT1Node);
+    pNetGnd->add_node(pVin->pNegNode);
+    pNetGnd->add_node(pVdd->pNegNode);
     pNetGnd->add_node(pZ4->pT2Node);
     pNetGnd->add_node(pU1Vss->pT2Node);
     nets.push_back(pNetGnd);

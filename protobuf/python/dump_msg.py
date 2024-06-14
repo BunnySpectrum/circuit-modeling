@@ -3,7 +3,7 @@ import sys
 import code
 
 # Plz don't @ me - this isn't a final way of handling the import :)
-sys.path.append("../../cppsim/build/host")
+sys.path.append("../../system_cpp/build/host")
 import netlist_pb2
 
 system = netlist_pb2.System()
@@ -17,10 +17,10 @@ elementlist = system.elementlist
 print("Elements")
 for element in elementlist.elements:
     # print(f"{node.name}: {[_.name for _ in node.connections]}")
-    info = [(_.name + ":" + str(_.uid)) for _ in element.nodes]
+    info = [(_.key + ": " +_.name + ":" + str(_.uid)) for _ in element.nodes]
     # info = ""
     typeName = netlist_pb2.ElementType.Name(element.type)
-    print(f"\t{element.name}:{element.uid} --- Type: {typeName} --- Nodes: {info}")
+    print(f"\t{element.name}:{element.uid} --- Type: {typeName} --- Nodes: {{{', '.join(info)}}}")
 print("")
 
 print("Nets")

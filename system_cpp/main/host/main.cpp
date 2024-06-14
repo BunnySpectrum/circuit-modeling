@@ -6,16 +6,20 @@
 #include <variant>
 #include "comp/resistor.h"
 #include "prime/terminal_2way.h"
+#include "prime/voltage_source.h"
 #include "netlist.pb.h"
 #include "prime/net.h"
 
-#include "sallen_key/design.h"
+// #include "sallen_key/design.h"
+#include "rlc_lp/design.h"
+
+
 
 int main(){
 
     // Load the sallen key example
     std::list<std::shared_ptr<Net>> skNets;
-    std::list<std::shared_ptr<Terminal_2Way>> skElements;
+    std::list<std::shared_ptr<Element>> skElements;
     load_design(skNets, skElements);
 
 
@@ -53,12 +57,12 @@ int main(){
 
 
     std::cout << "Elements:" << std::endl;
-    for (const std::shared_ptr<Terminal_2Way>& elementT2 : skElements){
+    for (const std::shared_ptr<Element>& element : skElements){
     
-        std::cout << "\t" << elementT2->name << " [";
+        std::cout << "\t" << element->name() << " [";
         
         bool firstTime = true;
-        for(const std::shared_ptr<Node>& node : elementT2->get_nodes()){
+        for(const std::shared_ptr<Node>& node : element->get_nodes()){
           if(firstTime){
             std::cout << node->name;
             firstTime = false;
@@ -68,7 +72,7 @@ int main(){
         }
         std::cout << "]" << std::endl;
 
-        pElementPB = elementT2->to_proto();
+        pElementPB = element->to_proto();
         pElementsPB->AddAllocated(pElementPB.release());
     }
 
