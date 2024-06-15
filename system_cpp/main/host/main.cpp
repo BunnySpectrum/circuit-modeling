@@ -10,23 +10,30 @@
 #include "netlist.pb.h"
 #include "prime/net.h"
 
-// #include "sallen_key/design.h"
-#include "rlc_lp/design.h"
+#include "sallen_key/sallen_key.h"
+#include "rlc_lp/rlc_lp.h"
 
-
+#define CIRCUIT_RLC_LP
+// #define CIRCUIT_SALLEN_KEY
 
 int main(){
 
-    // Load the sallen key example
-    std::list<std::shared_ptr<Net>> skNets;
-    std::list<std::shared_ptr<Element>> skElements;
-    load_design(skNets, skElements);
+    std::list<std::shared_ptr<Net>> circuitNets;
+    std::list<std::shared_ptr<Element>> circuitElements;
+
+    // Load a circuit example
+    #if defined(CIRCUIT_RLC_LP)
+    Circuit_RLC_LP circuitRLC_LP("rlc_lp");
+    circuitRLC_LP.load_design(circuitNets, circuitElements);
+    #elif defined(CIRCUIT_SALLEN_KEY)
+      Circuit_Sallen_Key circuitSallenKey("sallen_key");
+      circuitSallenKey.load_design(circuitNets, circuitElements);
+    #endif
+
 
 
     netlist::System pbSystem;
-
     std::unique_ptr<netlist::Node> pNodePB;
-
 
     netlist::NetList* pbNetList = pbSystem.mutable_netlist();
     google::protobuf::RepeatedPtrField<netlist::Net> *pNetlistNetsPB = pbNetList->mutable_nets();
@@ -37,7 +44,7 @@ int main(){
     std::unique_ptr<netlist::Element> pElementPB;
 
     std::cout << "Nets:" << std::endl;
-    for(const std::shared_ptr<Net>& net : skNets){
+    for(const std::shared_ptr<Net>& net : circuitNets){
         std::cout << "\t" << net->name << " [";
 
         bool firstTime = true;
@@ -57,7 +64,7 @@ int main(){
 
 
     std::cout << "Elements:" << std::endl;
-    for (const std::shared_ptr<Element>& element : skElements){
+    for (const std::shared_ptr<Element>& element : circuitElements){
     
         std::cout << "\t" << element->name() << " [";
         

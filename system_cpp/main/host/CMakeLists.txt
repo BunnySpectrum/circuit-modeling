@@ -26,8 +26,9 @@ add_executable(${PROJECT_NAME}
     ${PROTO_SRCS}
     ${PROTO_HDRS}
     ${PROTO_PY}
-    # ../../designs/sallen_key/design.cpp
-    ../../designs/rlc_lp/design.cpp
+    ../../designs/sallen_key/sallen_key.cpp
+    ../../designs/rlc_lp/rlc_lp.cpp
+    ../../lib/circuit/circuit.cpp
     ../../lib/comp/resistor.cpp
     ../../lib/prime/terminal_2way.cpp
     ../../lib/prime/element.cpp    

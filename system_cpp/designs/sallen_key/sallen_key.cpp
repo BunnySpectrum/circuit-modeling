@@ -1,4 +1,4 @@
-#include "sallen_key/design.h"
+#include "sallen_key/sallen_key.h"
 
 /*
 
@@ -13,8 +13,8 @@
                                  (Gnd) +-----------------------+
 */
 
-void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Element>>& elements){
-    std::cout << "loading design." << std::endl;
+void Circuit_Sallen_Key::load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Element>>& elements){
+    std::cout << "Loading: "<< name_ << "." << std::endl;
 
 
     // Create elements

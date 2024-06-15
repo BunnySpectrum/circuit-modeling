@@ -1,4 +1,4 @@
-#include "rlc_lp/design.h"
+#include "rlc_lp/rlc_lp.h"
 
 /*
 (Vin) ---|  Z1  |---+---|  Z2  |---+
@@ -8,8 +8,8 @@
                                  (Gnd) 
 */
 
-void load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Element>>& elements){
-    std::cout << "Loading: RLC LP." << std::endl;
+void Circuit_RLC_LP::load_design(std::list<std::shared_ptr<Net>>& nets, std::list<std::shared_ptr<Element>>& elements){
+    std::cout << "Loading: "<< name_ << "." << std::endl;
 
 
     // Create elements
