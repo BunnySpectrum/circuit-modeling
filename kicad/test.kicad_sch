@@ -1,6 +1,6 @@
 (kicad_sch (version 20211014) (generator kiutils)
 
-  (uuid 3ac9df30-75db-4ddb-8f86-237cc36e9594)
+  (uuid 5443b932-203f-4864-8fab-a4b397151620)
 
   (paper "A4")
 
@@ -60,27 +60,31 @@
 
   (symbol (lib_id "Device:C") (at 127 69.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 4888d7de-419c-4743-9b04-6181ee844195)
-    (property "Reference" "C1" (at 130.81 68.5799 0)
+    (uuid 9e541002-4225-4e5e-96ba-1a89e11eaae0)
+    (property "Reference" "C1" (at 127.635 72.39 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "C" (at 130.81 71.1199 0)
+    (property "Value" "C" (at 127.635 67.30999999999999 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (at 127.9652 73.66 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
+    (property "Footprint" "" (at 127.9652 66.03999999999999 0)
+      (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Datasheet" "" (at 127 69.85 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
+    (property "Datasheet" "~" (at 127 69.85 0)
+      (effects (font (size 1.27 1.27)) hide)
     )
     (property "Description" "Unpolarized capacitor" (at 127 69.85 0)
-      (effects (font (size 1.27 1.27)) (justify left) hide)
+      (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 8d7ff4aa-39e2-40ee-987e-9b55091be514))
-    (pin "2" (uuid 97025480-0f99-4ab7-825c-cbdd1275c333))
+    (property "ki_keywords" "cap capacitor" (at 127 69.85 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "ki_fp_filters" "C_*" (at 127 69.85 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
     (instances
       (project ""
-        (path "/3ac9df30-75db-4ddb-8f86-237cc36e9594"
+        (path "/5443b932-203f-4864-8fab-a4b397151620"
           (reference "C1") (unit 1)
         )
       )
