@@ -1,6 +1,6 @@
 (kicad_sch (version 20211014) (generator kiutils)
 
-  (uuid c6903e08-7bb7-4210-9bc3-e8fed23c7000)
+  (uuid 45e10f6c-35c7-40e6-8cd5-e849f87dcbda)
 
   (paper "A4")
 
@@ -150,9 +150,18 @@
     )
   )
 
+  (wire (pts (xy 83.82 63.5) (xy 101.6 63.5))
+    (stroke (width 0))
+    (uuid 36372c7c-aca1-48e6-babf-21a161e4ab1b)
+  )
+  (wire (pts (xy 127 66.04) (xy 109.22 63.5))
+    (stroke (width 0))
+    (uuid a6b6a102-766b-470c-b3a3-95c683e50d86)
+  )
+
   (symbol (lib_id "Device:C") (at 127 69.85 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 597fe8e6-8e7a-4745-9e5a-8866fcc2868b)
+    (uuid b95c7092-b44a-4978-9d98-eb68d4b15c48)
     (property "Reference" "C1" (at 127.635 72.39 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
@@ -174,9 +183,11 @@
     (property "ki_fp_filters" "C_*" (at 127 69.85 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (pin "1" (uuid a3db1a10-362f-4694-b983-c43988628c42))
+    (pin "2" (uuid bf86f352-b6ef-4213-be90-8a98fed7ad54))
     (instances
       (project ""
-        (path "/c6903e08-7bb7-4210-9bc3-e8fed23c7000"
+        (path "/45e10f6c-35c7-40e6-8cd5-e849f87dcbda"
           (reference "C1") (unit 1)
         )
       )
@@ -185,7 +196,7 @@
 
   (symbol (lib_id "Device:L") (at 105.41 63.5 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 5f0a9b33-38c7-4034-90e0-c4f238cff2c5)
+    (uuid cb4ce2d6-894a-4a31-a4dd-419d4affcb0a)
     (property "Reference" "L1" (at 105.41 57.15 90)
       (effects (font (size 1.27 1.27)))
     )
@@ -207,9 +218,11 @@
     (property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*" (at 105.41 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (pin "1" (uuid 317704ee-cd0c-48ab-b8ce-662df6a7a58b))
+    (pin "2" (uuid 09108232-8a3b-4f78-b788-e295034fcbcc))
     (instances
       (project ""
-        (path "/c6903e08-7bb7-4210-9bc3-e8fed23c7000"
+        (path "/45e10f6c-35c7-40e6-8cd5-e849f87dcbda"
           (reference "L1") (unit 1)
         )
       )
@@ -218,7 +231,7 @@
 
   (symbol (lib_id "Device:R") (at 80.01 63.5 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
-    (uuid 867ecfcb-1457-4e8c-89e5-c20d1dfb8a39)
+    (uuid dc64156c-18ab-4139-a4f1-1282e62ed8ad)
     (property "Reference" "R1" (at 80.01 60.452 90)
       (effects (font (size 1.27 1.27)))
     )
@@ -240,9 +253,11 @@
     (property "ki_fp_filters" "R_*" (at 80.01 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
+    (pin "1" (uuid d042d13c-595c-4214-b079-34500feaee69))
+    (pin "2" (uuid d9f06343-4233-425b-87de-252537e94717))
     (instances
       (project ""
-        (path "/c6903e08-7bb7-4210-9bc3-e8fed23c7000"
+        (path "/45e10f6c-35c7-40e6-8cd5-e849f87dcbda"
           (reference "R1") (unit 1)
         )
       )
