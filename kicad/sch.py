@@ -52,8 +52,6 @@ def rotate_pos(pos:Position, degree = 0) -> Position:
         newY = -1*pos.Y
     
     newPos = Position(X=newX, Y=newY, angle=0)
-    # pos.X = newX 
-    # pos.Y = newY
 
     return newPos
 
@@ -64,10 +62,6 @@ def symbol_from_lib(lib : SymbolLib, index : int) -> Symbol:
     if symbol.libraryNickname is None:
         libNickname = os.path.splitext(os.path.basename(lib.filePath))[0]
         symbol.libraryNickname = libNickname
-
-    # print(symbol.libId)
-    # print(symbol.entryName)
-    # print(symbol.hidePinNumbers)
 
     return symbol
 
@@ -208,11 +202,33 @@ def draw_wire(sch:Schematic, comp1:SymbolInstanceBuilder, pin1:str, comp2:Symbol
     
     sch.graphicalItems.append(conn)
 
+idxDevice = {
+    "C": 10,
+    "Crystal": 37,
+    "D": 47,
+    "DelayLine": 196,
+    "Fuse": 210,
+    "R": 456,
+    "L": 219,
+    "LED": 220,
+    "Opamp_Dual": 339,
+    }
+
+#Simulation_SPICE
+idxSPICE = {
+    "IDC": 10,
+    "NMOS": 19,
+    "PMOS": 25,
+    "OPAMP": 23,
+    "VDC": 32,
+}
+
 kicad8SymbolDir = "/Applications/KiCad/KiCad.app/Contents/SharedSupport/symbols/"
 deviceSym = os.path.join(kicad8SymbolDir, 'Device.kicad_sym')
 idxR = 456
 idxL = 219
 idxC = 10
+
 
 
 sch = Schematic.create_new()
