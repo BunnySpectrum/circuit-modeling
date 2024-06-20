@@ -1,8 +1,8 @@
 #include "voltage_source.h"
 
 Voltage_Source::Voltage_Source(std::string objName):
-    pPosNode(std::make_shared<Node>(objName + "-P", "P")),
-    pNegNode(std::make_shared<Node>(objName + "-N", "N")){
+    pPosNode(Node::create(objName + "-P", "P")),
+    pNegNode(Node::create(objName + "-N", "N")){
     uid_ = UID::next_id();
     name_ = objName;
 }

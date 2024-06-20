@@ -1,6 +1,6 @@
 #include "node.h"
 
-Node::Node(std::string objName, std::string keyValue){
+Node::Node(Key _, std::string objName, std::string keyValue){
     uid = UID::next_id();
     name = objName;
     key = keyValue;

@@ -10,11 +10,22 @@
 class Net;
 
 class Node : public std::enable_shared_from_this<Node> { 
+    private:
+        struct Key{
+            friend Node;
+        };
+
     public:
         bool operator==(const Node &otherNode) const;
        
-        Node(std::string objName, std::string key); // Primary constructor
-        Node(std::string objName): Node(objName, ""){} // Delegating constructor
+        Node(Key _, std::string objName, std::string key); // Primary constructor
+        Node(Key _, std::string objName): Node(_, objName, ""){} // Delegating constructor
+
+        template<typename... A>
+        static std::shared_ptr<Node> create(A&&... params)
+        {
+            return std::make_shared<Node>(Key(), std::forward<A>(params)...);
+        }
 
         std::unique_ptr<netlist::Node> to_proto();
 
@@ -22,6 +33,8 @@ class Node : public std::enable_shared_from_this<Node> {
         std::string name;
         std::string key;
         friend std::ostream &operator<<(std::ostream &os, Node const &node);        
+
+
 
 };
 
